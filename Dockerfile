@@ -1,5 +1,5 @@
 FROM phusion/baseimage:jammy-1.0.1
-MAINTAINER evilalmus
+LABEL by evilalmus
 
 # Set correct environment variables
 ENV DEBIAN_FRONTEND noninteractive
