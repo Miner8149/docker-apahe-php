@@ -1,7 +1,6 @@
 # Apache-PHP Web Server
 This is a basic installation to serve web pages in Apache-PHP.
 
-I forked to add lines in the dockerfile that:
- - Update all of the installed packages
- - Add the cURL package for PHP 8.1
- - enable cURL in the php.ini folder
+Apache and PHP 8.3 are installed by default
+Base image is phusion/baseimage:noble-1.0.1
+cURL is enabled by default
