@@ -1,4 +1,4 @@
-FROM phusion/baseimage:jammy-1.0.1
+FROM phusion/baseimage:noble-1.0.1
 LABEL by evilalmus
 
 # Set correct environment variables
@@ -22,19 +22,24 @@ CMD ["/sbin/my_init"]
  chown -R nobody:users /home
 
 
-RUN apt-get update 
+RUN apt-get update -qy
+RUN apt-get install -qy nano
 RUN apt-get install -qy mc
 RUN apt-get install -qy tmux
 RUN apt-get install -qy inotify-tools
+RUN apt-get update -qy
+RUN apt-get upgrade -qy
 
 # Install proxy Dependencies
 RUN \
   apt-get update -q && \
-  apt-get install -qy apache2 php && \
+  apt-get install -qy php && \
   apt clean -y && \
   a2enmod rewrite && \
   rm -rf /var/lib/apt/lists/*
- 
+
+RUN apt-get install -qy php8.3-curl
+
 RUN \
   service apache2 restart && \
   rm -R -f /var/www && \
@@ -85,3 +90,6 @@ ADD apache-run.sh /etc/service/apache/run
 RUN chmod +x /etc/service/apache/run
 ADD apache-finish.sh /etc/service/apache/finish
 RUN chmod +x /etc/service/apache/finish
+
+# Modify php.ini file to enable curl
+RUN sed -i s/;extension=curl/extension=curl/g /etc/php/8.3/apache2/php.ini
